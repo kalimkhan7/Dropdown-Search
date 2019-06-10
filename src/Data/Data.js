@@ -489,7 +489,7 @@ var data = [
     },
     {
         "country": "Luxembourg",
-        "city": "Luxembourg [Luxemburg/L"
+        "city": "Luxembourg [Luxemburg]"
     },
     {
         "country": "Macao",

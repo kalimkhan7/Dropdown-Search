@@ -7,29 +7,26 @@ class App extends React.Component {
   state = {
     data: Data || [],
     showItems: false,
-    selectedItem: this.data && this.data[0].city,
-    searchResults: null
+    result: null,
+    selectedItem: Data[0].city
+    
   }
 
-ShowItemsHandler = () => {
-
-  
+ShowItemsHandler = () => { 
   this.setState({
-    showItems: !this.state.showItems
-  
+    showItems: !this.state.showItems,
+    result: this.state.data
   })
 }
 
 selectItem = (country) => {
-
   this.setState({
-    selectedItem: country.city
+    selectedItem: country.city,
+    showItems: !this.state.showItems
   })
 }
 
 searchHandler = (event) => {
-
-  
   var searchResults = [];
   for(var obj of this.state.data) {
     if(obj.city.toUpperCase().indexOf(event.target.value.toUpperCase()) !== -1 ){
@@ -37,88 +34,62 @@ searchHandler = (event) => {
     }
   }
 
+
+
   this.setState({
-    searchResults: searchResults,
+    result: searchResults,
   })
 
   }
   
-
-  
-
   render() {
+     var i = 0;
+     if(this.state.showItems){
+       var show = <div className='show'>
+       <div className='input'>
+         <input 
+         type="text"
+         onChange={this.searchHandler}
+         placeholder="Search..."></input>
+       </div>
 
-    console.log(this.state.searchResults);
-    var i = 0;
+       <div 
+         className = 'CitiesDiv'>
+         {
+         
+           this.state.result.map( (country) => {
+             i++;
+             return (<div 
+                       onClick={this.selectItem.bind(this,country)}
+                       className={this.state.selectedItem === country.city ? 'selected' : ''}
+                       key={i}>
+                       {country.city}
+                   </div>)
+           } )              
+         }
+       </div>
+
+
+     </div>
+     
+     }
+
     return (
       <div className="App">
-        <h1>this is SPARTA!!!!!!!!!!!!</h1>
-        
+        <h1>this is SPARTA!!!!!!!!!!!!</h1> 
         <div className='container'>
-
-          <div className='selectedItem'>
+          <div className='selectedItem' onClick={this.ShowItemsHandler}>
             {this.state.selectedItem}
           </div>
-
-          <div className='input'>
-            <input 
-            type="text"
-            onChange={this.searchHandler}></input>
-          </div> 
-          <div className="arrow" onClick={this.ShowItemsHandler}>
+          <div className="arrow">
             <span className={this.state.showItems ? 'arrowUp' : 'arrowDown'}/>
           </div>
-          {
-            this.state.searchResults ? 
-            <div 
-            style={{display: this.state.showItems ? 'block' : 'none'} }
-            className = 'CitiesDiv'>
-            {
-            
-              this.state.searchResults.map( (country) => {
-                i++;
-                return (<div 
-                          onClick={this.selectItem.bind(this,country)}
-                          className={this.state.selectedItem === country.city ? 'selected' : ''}
-                          key={i}>
-                          {country.city}
-                      </div>)
-              } )
-  
-  
-                      
-            }
-            </div>
-            : 
-            <div 
-            style={{display: this.state.showItems ? 'block' : 'none'} }
-            className = 'CitiesDiv'>
-            {
-            
-              this.state.data.map( (country) => {
-                i++;
-                return (<div 
-                          onClick={this.selectItem.bind(this,country)}
-                          className={this.state.selectedItem === country.city ? 'selected' : ''}
-                          key={i}>
-                          {country.city}
-                      </div>)
-              } )
-  
-  
-                      
-            }
-            </div>
-          }
-
-          </div>
-        
-        
+          {show}
+        </div>    
       </div>
     );
   }
 
-  
 }
 
 export default App;
