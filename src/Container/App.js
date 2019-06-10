@@ -76,7 +76,7 @@ searchHandler = (event) => {
 
     return (
       <div className="App">
-        <h1>this is SPARTA!!!!!!!!!!!!</h1> 
+        <h1>React Custom Search Component</h1> 
         <div className='container'>
           <div className='selectedItem' onClick={this.ShowItemsHandler}>
             {this.state.selectedItem}
